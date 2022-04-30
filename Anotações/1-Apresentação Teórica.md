@@ -105,3 +105,207 @@ Links passados em aula para estudar
 (animações vistas nos slides)
 `https://marinaaisa.com/blog/cook-websites-based-on-your-needs/` (explicações sobre quando usar um ou outro)
 `https://github.com/vercel/next.js/tree/canary/examples` (vários exemplos oficiais do NextJS com outras tecnologias)
+
+## 3. introdução do GraphQL
+
+linguagem de consulta de dados desenvolvida e usada pelo facebook desde 2012
+
+Comparativo de antes e depois do GraphQL
+
+com Rest API
+
+```mermaid
+sequenceDiagram
+	Client ->> Server: HTTP Request
+	Server ->> Client: Json
+```
+
+**Uso de rotas com o pattern api**
+ex:
+	/api/v3/user/id
+	/api/v4/user/id
+	etc...
+
+**Problemas**
+
+> Dificuldades para evoluir a API
+>
+> Entrega de dados nem sempre necessários
+>
+> > como fazer requisição so da foto do usuario e ele retornar todas as infos do perfil
+>
+> Aumento do tamanho da requisição
+>
+> Rotas acopladas
+
+**Agora com o GraphQL**
+
+Prepara um Schema
+
+```
+ type User {
+	name: String
+	bio: String
+	avatarUrl: String
+	createdAt: DateTime!
+	followers: FollowersConnection
+}
+type FollowersConnection {
+	edges: [UserEdge]
+	nodes: [User]
+	totalCount: Int!
+}
+```
+
+podendo fazer a requisição somente dos valores pedidos como:
+
+```
+ query {
+	user(login: "willianjusten"){
+		name
+		location
+		followers {
+		totalCount
+		}
+	}
+}
+```
+
+O fluxo segue sendo o mesmo da Rest API com relação Cliente -> Servidor
+
+Na prática com a GraphQL do github
+`https://docs.github.com/pt/graphql/overview/explorer` 
+
+vem uma query default
+
+```GraphQL
+query { 
+  viewer { 
+    login
+  }
+}
+```
+
+que retorna o usuário da pessoa que está logada vendo aquela tela, no meu caso, jeftemartins
+
+```
+ query {
+user (login: "jeftemartins"){
+	avatarUrl
+	bio
+	followers {
+		totalCount
+		}
+	}
+}
+
+// saída
+
+{
+  "data": {
+    "user": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/36806973?u=b9c15a3cbf5bfaa16f1f1a08e2b68912ce6d4751&v=4",
+      "bio": " 25yo sutent of System and Digital Media at Federal University of Ceará, Brazil.\r\n",
+      "followers": {
+        "totalCount": 16
+      }
+    }
+  }
+}
+```
+
+Numa REST Api seria requisitado o 
+`{...}/users/jeftemartins`
+
+e todas as informações do meu perfil seriam retornadas, ao inves de enviar somente o que eu preciso.
+
+## 4. Introdução ao CSS-in-JS
+
+**problemas do CSS**
+
+> falta de escopo local
+>
+> especificidade e novamente, colisão de estilos
+>
+> codigo nao ustilizado
+>
+> falta de modularidade
+>
+> dificuldade na manutenção
+
+**Resoluções para os problemas**
+
+Pré processadores como Less, Sass, Stylus.
+
+**CSS-in-JS**
+
+é um conjunto de ideias para resolver os complexos problemas do CSS.
+
+Algumas das bibliotecas
+
+> Aphrodite
+> Emotion
+> Glamor
+> Styled Components
+> Styled JSX
+> Outras  (https://github.com/michelebertoli/css-in-js)
+
+Styled Componentes será usado no projeto, o pq veremos nos pontos abaixo
+
+> Critical CSS automático
+>
+> > Vê o above the fold, que seria o corte inicial da página que será visto primeiramente pelo usuário.
+> > Carregará essa parte inicialmente depois o restante
+>
+> Escopo definido (sem colisão de classes)
+>
+> > especificará o estilo naquele contexto
+>
+> Remoção do CSS não utilizado
+>
+> > se o css nao for usado naquela pagina naquele momento ele nao sera carregado
+>
+> Estilos dinamicos
+>
+> > Mudar estilos e componentes baseado no que se passa pros componentes
+>
+> Manutenção simplificada
+>
+> Vendor prefixing automático
+
+```jsx
+ import styled from 'styled-components'
+export const Main = styled.div`
+align-items: center;
+display: flex;
+`
+```
+
+como será compilado
+
+```css
+ .styled__Main-sc-11b8j8d-1-bSsuBw {
+	-webkit-box-align: center;
+	-webkit-box-pack: justify;
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+```
+
+esse código serve para cada componente ter seu css único
+
+Dinamicidade dependendo do componente
+
+```jsx
+ const Button = styled.button`
+background-color: ${props => props.primary? 'palevioletred': 'white'};
+color: ${props => props.primary? 'white': 'palevioletred' };
+render(
+<div>
+<Button>Normal</Button>
+<Button primary>Primary</Button>
+</div>
+)
+```
+
