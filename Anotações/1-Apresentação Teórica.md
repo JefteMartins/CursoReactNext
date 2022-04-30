@@ -302,10 +302,70 @@ Dinamicidade dependendo do componente
 background-color: ${props => props.primary? 'palevioletred': 'white'};
 color: ${props => props.primary? 'white': 'palevioletred' };
 render(
-<div>
-<Button>Normal</Button>
-<Button primary>Primary</Button>
-</div>
+	<div>
+	<Button>Normal</Button>
+	<Button primary>Primary</Button>
+	</div>
 )
 ```
 
+## 5. Introdução a Testes de Software
+
+- Código complexo nao se debuga só com o olho
+- Testar pe uma forma robusta de **Validar o software**
+  - Funciona como eu espero?
+  - Funciona como o usuário espera?
+  - Se eu atualizar esse trecho, o código quebra?
+- Testes funcionam como uma primeira camada de documentação
+
+#### **Tipos de testes**
+
+- **Testes unitários**
+
+  > Testam **isoladamente** pequenas unidades de código
+  >
+  > O código está se comportando como o **desenvolvedor** espera?
+
+- **Testes Funcionais**
+
+  > Checar se as unidades funcionam também entre si
+  >
+  > Testes podem conter múltiplas classes, métodos e etc
+  >
+  > O programa funciona de acordo com o que o **usuário** espera?
+
+
+
+#### **Como escreveríamos um teste de um sistema de busca.**
+
+- Expande quando em foco
+- Envia uma request para um banco de dados com a palavra digitada
+- Recebe dados e renderiza na tela a lista
+- Destaca dentro dos itens a string digitada
+- Quando não possui nenhum item, mostra uma mensagem
+
+**Como faríamos com testes unitários**
+
+- Isolamos só o componente de busca (criando mock para o serviço)
+- Testar cada um dos comportamentos de forma separada.
+  - Se o campo recebe focus, ele expande? (ex: adição de classe)
+  - Ao ter uma string no campo, o método de fetch API é chamado?
+  - A string do campo é passada corretamente para a API e os dados retornados são condizentes?
+  - Dado um conjunto de dados recebidos, a lista é renderizada?
+  - Se não tiver dados, uma mensagem é preenchida?
+
+**Para os testes funcionais, como faríamos?**
+
+- Aqui não há mais isolamento entre os métodos e nós realizamos o fluxo completo
+  - Simula o **usuário** clicando
+  - Simula o **usuário** digitando e apagando
+  - Simula o **usuário** clicando num item da pesquisa
+- E analisa todo o fluxo para ver se o comportamento funciona como esperado
+
+#### TDD  -  Test-Driven development
+
+Guiar pelo teste pq escrever os testes após o desenvolvimento pode enviesar seus testes e trazer problemas
+
+**Usaremos Jest e Cypress**
+
+**Para testar o React será usado o React Testing Library**
