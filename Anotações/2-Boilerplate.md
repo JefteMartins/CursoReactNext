@@ -120,3 +120,9 @@ seguir o tutorial `https://github.com/prettier/eslint-plugin-prettier`
 `npx husky-init && npm install `
 
 ## 13. Instalando e configurando o Jest com TypeScript
+
+## 14. Instalando e configurando React Testing Library
+
+Melhor que o enzime pq vai renderizar de verdade seu componente 
+
+`npm install --save-dev @testing-library/react` 
