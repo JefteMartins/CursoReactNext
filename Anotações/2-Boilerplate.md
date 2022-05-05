@@ -126,3 +126,113 @@ seguir o tutorial `https://github.com/prettier/eslint-plugin-prettier`
 Melhor que o enzime pq vai renderizar de verdade seu componente 
 
 `npm install --save-dev @testing-library/react` 
+
+código de teste
+
+```tsx
+import { render, screen } from '@testing-library/react'
+
+import Main from '.'
+
+describe('<Main />', () => {
+  it('should render the heading', () => {
+    const { container } = render(<Main />)
+
+    expect(
+      screen.getByRole('heading', { name: /react avançado/i })
+    ).toBeInTheDocument()
+
+    expect(container.firstChild).toMatchSnapshot()
+  })
+})
+//espera encontrar um h1 com react avançado sem ser case sensitive e que bata com o snapshot como segunda forma de segurança
+```
+
+## 15. Usando findRelatedTests para o hook
+
+um detalhe atualizando o lint staged para 
+
+```json
+"lint-staged": {
+    "src/**/*": ["eslint --cache --fix", "npm test --findRelatedTests --bail"]
+  }
+```
+
+adicionado o find related tests para dizer para testar o que foi modificado
+
+## 16. Instalando o Styled Components e configurando o SSR
+
+instalação do @babel/styled-components e do babel-plugin-styled-components além do proprio styled components
+
+## 17. Criando estilos globais com createGlobalStyle
+
+```tsx
+import { createGlobalStyle } from 'styled-components'
+
+const GlobalStyles = createGlobalStyle `
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        font-size: 62.5%;
+      }
+      html, body, #__next {
+        height: 100%;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+      }
+`
+
+export default GlobalStyles
+```
+
+
+
+## 18. Criando estilos no primeiro componente
+
+```tsx
+import styled from 'styled-components'
+
+export const Wrapper = styled.main`
+  background-color: #06092b;
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  padding: 3rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
+export const Logo = styled.img`
+  width: 25rem;
+  margin-bottom: 2rem;
+`
+
+export const Title = styled.h1`
+  font-size: 2.5rem;
+`
+
+export const Description = styled.h2`
+  font-size: 2rem;
+  font-weight: 400;
+`
+
+export const Illustration = styled.img`
+  margin-top: 3rem;
+  width: min(30rem, 100%);
+`
+```
+
+## 19. Melhorando snapshots com Jest-styled-components
+
+`npm install --save-dev jest-styled-components`
+
+## 20. Configurando o PWA
+
+instalando PWA e configurando
